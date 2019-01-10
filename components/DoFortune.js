@@ -22,32 +22,49 @@ export default class DoFortune extends React.Component {
   }
 
   state = {
-    fadeAnim: new Animated.Value(0),
+    cardAnimation: new Animated.Value(0),
+    guideAnimation: new Animated.Value(0),
   }
 
   componentDidMount() {
-    Animated.timing(
-      this.state.fadeAnim,
-      {
-        toValue: 1,
-        duration: 2000,
-      }
-    ).start();
+    Animated.sequence([
+      Animated.timing(
+        this.state.cardAnimation,
+        {
+          toValue: 1,
+          duration: 2000,
+        }
+      ),
+      Animated.timing(
+        this.state.guideAnimation,
+        {
+          toValue: 1,
+          duration: 1000,
+        }
+      )
+    ]).start();
   }
 
   render() {
-    let { fadeAnim } = this.state;
+    let { cardAnimation, guideAnimation } = this.state;
+
     return (
-      <Animated.View style={{
+      <View style={{
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        opacity: fadeAnim,
       }}>
-
-        <Image source={require("../assets/tarot.jpg")}></Image>
-
-      </Animated.View>
+        <Animated.View style={{
+          opacity: cardAnimation,
+        }}>
+          <Image source={require("../assets/tarot.jpg")}></Image>
+        </Animated.View>
+        <Animated.View style={{
+          opacity: guideAnimation,
+        }}>
+          <Text>Tap Your Fortune Card</Text>
+        </Animated.View>
+      </View>
     );
   }
 }
