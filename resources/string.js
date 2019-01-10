@@ -1,0 +1,1 @@
+export const ThisIsHome = "This is Home"
