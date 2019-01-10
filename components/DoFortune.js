@@ -19,6 +19,7 @@ import {
 export default class DoFortune extends React.Component {
   constructor(props) {
     super(props);
+    this._onPressCard = this._onPressCard.bind(this);
   }
 
   state = {
@@ -45,6 +46,18 @@ export default class DoFortune extends React.Component {
     ]).start();
   }
 
+  _onPressCard() {
+    // Animated.sequence([
+    Animated.timing(
+      this.state.cardAnimation,
+      {
+        toValue: 0,
+        duration: 1000,
+      },
+    ).start();
+    // ]).start();
+  }
+
   render() {
     let { cardAnimation, guideAnimation } = this.state;
 
@@ -57,7 +70,9 @@ export default class DoFortune extends React.Component {
         <Animated.View style={{
           opacity: cardAnimation,
         }}>
-          <Image source={require("../assets/tarot.jpg")}></Image>
+          <TouchableOpacity onPress={this._onPressCard}>
+            <Image source={require("../assets/tarot.jpg")}></Image>
+          </TouchableOpacity>
         </Animated.View>
         <Animated.View style={{
           opacity: guideAnimation,
