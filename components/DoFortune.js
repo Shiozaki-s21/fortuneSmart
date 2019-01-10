@@ -25,6 +25,7 @@ export default class DoFortune extends React.Component {
   state = {
     cardAnimation: new Animated.Value(0),
     guideAnimation: new Animated.Value(0),
+    arcanaAnimation: new Animated.Value(0),
   }
 
   componentDidMount() {
@@ -33,7 +34,7 @@ export default class DoFortune extends React.Component {
         this.state.cardAnimation,
         {
           toValue: 1,
-          duration: 2000,
+          duration: 1500,
         }
       ),
       Animated.timing(
@@ -47,19 +48,26 @@ export default class DoFortune extends React.Component {
   }
 
   _onPressCard() {
-    // Animated.sequence([
-    Animated.timing(
-      this.state.cardAnimation,
-      {
-        toValue: 0,
-        duration: 1000,
-      },
-    ).start();
-    // ]).start();
+    Animated.sequence([
+      Animated.timing(
+        this.state.cardAnimation,
+        {
+          toValue: 0,
+          duration: 1000,
+        },
+      ),
+      Animated.timing(
+        this.state.arcanaAnimation,
+        {
+          toValue: 1,
+          duration: 1500,
+        }
+      )
+    ]).start();
   }
 
   render() {
-    let { cardAnimation, guideAnimation } = this.state;
+    let { cardAnimation, guideAnimation, arcanaAnimation } = this.state;
 
     return (
       <View style={{
@@ -67,6 +75,7 @@ export default class DoFortune extends React.Component {
         alignItems: 'center',
         justifyContent: 'center',
       }}>
+        {/* 初期カード */}
         <Animated.View style={{
           opacity: cardAnimation,
         }}>
@@ -74,10 +83,19 @@ export default class DoFortune extends React.Component {
             <Image source={require("../assets/tarot.jpg")}></Image>
           </TouchableOpacity>
         </Animated.View>
+
+        {/* 文字列:ここ押して */}
         <Animated.View style={{
           opacity: guideAnimation,
         }}>
           <Text>Tap Your Fortune Card</Text>
+        </Animated.View>
+
+        {/* アルカナ */}
+        <Animated.View style={{
+          opacity: arcanaAnimation,
+        }}>
+          <Image source={require("../assets/0.jpg")}></Image>
         </Animated.View>
       </View>
     );
@@ -92,5 +110,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+
+
+// TODO: レイヤのようにAnimatedを隠しておく方法がわからないので、結果は別画面実装とする
+//       実装完了後、課題として再実装をする 
 
 
